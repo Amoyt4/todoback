@@ -6,9 +6,9 @@ import (
 	handler "diplom_back/internal/handler/http"
 	"diplom_back/internal/storage"
 	"errors"
-	"fmt"
 	"log/slog"
 	"net/http"
+	"os" // 🔥 ДОБАВЬТЕ ЭТОТ ИМПОРТ
 	"os/signal"
 	"syscall"
 	"time"
@@ -24,8 +24,15 @@ func main() {
 	defer stop()
 
 	cfg.Client = storage.NewConnection(ctx, cfg)
+
+	// 🔥 ИСПРАВЛЕНИЕ: Получаем порт из переменных окружения Render
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // дефолтный порт для Render
+	}
+
 	server := &http.Server{
-		Addr:         fmt.Sprintf(":%d", cfg.Env.API_PORT),
+		Addr:         ":" + port, // 🔥 Используем порт из Render
 		Handler:      handler.Setup(cfg, ctx),
 		WriteTimeout: time.Second * 15,
 		ReadTimeout:  time.Second * 15,
@@ -33,16 +40,17 @@ func main() {
 	}
 
 	go func() {
-		slog.Info("Server run")
+		slog.Info("Server running on port " + port)
 		if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-			slog.Error("⚫️ Server %v", slog.String("error", err.Error()))
+			slog.Error("Server error", slog.String("error", err.Error()))
 			panic(err)
 		}
 	}()
+
 	<-ctx.Done()
-	slog.Info("⚫️ Graceful shutdown initiated...")
+	slog.Info("Graceful shutdown initiated...")
 	if err := server.Shutdown(ctx); err != nil {
-		slog.Error("⚫️ Server forced to shutdown", slog.String("error", err.Error()))
+		slog.Error("Server forced to shutdown", slog.String("error", err.Error()))
 		panic(err)
 	}
 }
