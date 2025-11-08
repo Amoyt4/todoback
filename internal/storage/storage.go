@@ -12,15 +12,7 @@ import (
 )
 
 func NewConnection(ctx context.Context, cfg *config.Config) *pgxpool.Pool {
-	env := cfg.Env
-
-	dsn := fmt.Sprintf("postgresql://%s:%s@%s:%d/%s",
-		env.DB_USERNAME,
-		env.DB_PASSWORD,
-		env.DB_HOST,
-		env.DB_PORT,
-		env.DB_NAME,
-	)
+	dsn := "postgresql://postgres:VmlmbLwbVIrvoJVzkYtUyBERTkhbIORE@yamanote.proxy.rlwy.net:35811/railway"
 
 	parseConfig, err := pgxpool.ParseConfig(dsn)
 	if err != nil {
