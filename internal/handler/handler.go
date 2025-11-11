@@ -14,14 +14,25 @@ func Setup(cfg *config.Config) {
 	mux := mux.NewRouter()
 	db := cfg.Client
 
-	mux.HandleFunc(GetAllCleaning, loggingMiddleware(corsMiddleware(controllers.GetAllCleaning(db))))
-	mux.HandleFunc(GetAllCleaning, loggingMiddleware(corsMiddleware(controllers.PostNewCleaning(db))))
-	mux.HandleFunc(GetAllCleaning, loggingMiddleware(corsMiddleware(controllers.DeleteCleaningById(db))))
+	//Cleaning
+	mux.HandleFunc(GetAllCleaning, loggingMiddleware(corsMiddleware(controllers.GetAllCleaningHandler(db))))
+	mux.HandleFunc(PostNewCleaning, loggingMiddleware(corsMiddleware(controllers.PostNewCleaningHandler(db))))
+	mux.HandleFunc(DeleteCleaningById, loggingMiddleware(corsMiddleware(controllers.DeleteCleaningByIdHandler(db))))
+
+	//Employee
+	mux.HandleFunc(GetAllEmployee, loggingMiddleware(corsMiddleware(controllers.GetAllEmployeeHandler(db))))
+	mux.HandleFunc(PostNewEmployee, loggingMiddleware(corsMiddleware(controllers.PostNewEmployeeHandler(db))))
+	mux.HandleFunc(DeleteEmployeeById, loggingMiddleware(corsMiddleware(controllers.DeleteEmployeeByIdHandler(db))))
+
+	//Contact Employee
+	mux.HandleFunc(GetAllEmployeeContacts, loggingMiddleware(corsMiddleware(controllers.GetAllEmployeeContactsHandler(db))))
+	mux.HandleFunc(PostNewEmployeeContacts, loggingMiddleware(corsMiddleware(controllers.PostNewEmployeeContactsHandler(db))))
+	mux.HandleFunc(DeleteEmployeeContactsById, loggingMiddleware(corsMiddleware(controllers.DeleteEmployeeContactsByIdHandler(db))))
+
 }
 
 func loggingMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// Logging every request
 
 		// не логируем метод OPTIONS
 		if r.Method == http.MethodOptions {
