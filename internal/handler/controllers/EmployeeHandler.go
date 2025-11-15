@@ -37,7 +37,6 @@ func PostNewEmployeeHandler(ctx context.Context, db *pgxpool.Pool) http.HandlerF
 			return
 		}
 		var employee entity.NewEmployee
-		var id uint
 
 		body := json.NewDecoder(r.Body)
 		if err := body.Decode(&employee); err != nil {

@@ -25,10 +25,10 @@ func Setup(cfg *config.Config, ctx context.Context) http.Handler {
 	mux.HandleFunc(PostNewEmployee, loggingMiddleware(corsMiddleware(controllers.PostNewEmployeeHandler(ctx, db)))).Methods("POST")
 	mux.HandleFunc(DeleteEmployeeById, loggingMiddleware(corsMiddleware(controllers.DeleteEmployeeByIdHandler(ctx, db)))).Methods("DELETE")
 
-	////Contact Employee
-	//mux.HandleFunc(GetAllEmployeeContacts, loggingMiddleware(corsMiddleware(controllers.GetAllEmployeeContactsHandler(ctx, db)))).Methods("GET")
-	//mux.HandleFunc(PostNewEmployeeContacts, loggingMiddleware(corsMiddleware(controllers.PostNewEmployeeContactsHandler(ctx, db)))).Methods("POST")
-	//mux.HandleFunc(DeleteEmployeeContactsById, loggingMiddleware(corsMiddleware(controllers.DeleteEmployeeContactsByIdHandler(ctx, db)))).Methods("DELETE")
+	//Contact Employee
+	mux.HandleFunc(GetAllEmployeeContacts, loggingMiddleware(corsMiddleware(controllers.GetAllEmployeeContactsHandler(ctx, db)))).Methods("GET")
+	mux.HandleFunc(PostNewEmployeeContacts, loggingMiddleware(corsMiddleware(controllers.PostNewEmployeeContactsHandler(ctx, db)))).Methods("POST")
+	mux.HandleFunc(DeleteEmployeeContactsById, loggingMiddleware(corsMiddleware(controllers.DeleteEmployeeContactsByIdHandler(ctx, db)))).Methods("DELETE")
 	return mux
 }
 
