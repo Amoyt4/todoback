@@ -9,7 +9,7 @@ var (
 	DeleteCleaningById = "/api/cleanings"
 )
 
-// Empolyee
+// Employee
 var (
 	GetAllEmployee     = "/api/employees"
 	PostNewEmployee    = "/api/employees"
