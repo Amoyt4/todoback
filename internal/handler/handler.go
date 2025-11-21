@@ -4,6 +4,7 @@ import (
 	"context"
 	"diplom_back/config"
 	"diplom_back/internal/handler/controllers"
+	"diplom_back/internal/handler/controllers/storeHandler"
 	"fmt"
 	"log/slog"
 	"net/http"
@@ -29,6 +30,22 @@ func Setup(cfg *config.Config, ctx context.Context) http.Handler {
 	mux.HandleFunc(GetAllEmployeeContacts, loggingMiddleware(corsMiddleware(controllers.GetAllEmployeeContactsHandler(ctx, db)))).Methods("GET")
 	mux.HandleFunc(PostNewEmployeeContacts, loggingMiddleware(corsMiddleware(controllers.PostNewEmployeeContactsHandler(ctx, db)))).Methods("POST")
 	mux.HandleFunc(DeleteEmployeeContactsById, loggingMiddleware(corsMiddleware(controllers.DeleteEmployeeContactsByIdHandler(ctx, db)))).Methods("DELETE")
+
+	//STORE
+	mux.HandleFunc(GetAllDishes, loggingMiddleware(corsMiddleware(storeHandler.GetAllDishesHandler(ctx, db)))).Methods("GET")
+	mux.HandleFunc(PostNewDishes, loggingMiddleware(corsMiddleware(storeHandler.PostNewDishesHandler(ctx, db)))).Methods("POST")
+	mux.HandleFunc(DeleteDishesById, loggingMiddleware(corsMiddleware(storeHandler.DeleteDishByIdHandler(ctx, db)))).Methods("DELETE")
+
+	// Order handlers
+	mux.HandleFunc(GetAllOrders, loggingMiddleware(corsMiddleware(storeHandler.GetAllOrdersHandler(ctx, db)))).Methods("GET")
+	mux.HandleFunc(GetOrderByID, loggingMiddleware(corsMiddleware(storeHandler.GetOrderByIDHandler(ctx, db)))).Methods("GET")
+	mux.HandleFunc(PostNewOrder, loggingMiddleware(corsMiddleware(storeHandler.PostNewOrderHandler(ctx, db)))).Methods("POST")
+	mux.HandleFunc(DeleteOrder, loggingMiddleware(corsMiddleware(storeHandler.DeleteOrderHandler(ctx, db)))).Methods("DELETE")
+
+	// OrderItem handlers
+	mux.HandleFunc(GetOrderItems, loggingMiddleware(corsMiddleware(storeHandler.GetOrderItemsByOrderIDHandler(ctx, db)))).Methods("GET")
+	mux.HandleFunc(UpdateOrderItem, loggingMiddleware(corsMiddleware(storeHandler.UpdateOrderItemQuantityHandler(ctx, db)))).Methods("PUT")
+	mux.HandleFunc(DeleteOrderItem, loggingMiddleware(corsMiddleware(storeHandler.DeleteOrderItemHandler(ctx, db)))).Methods("DELETE")
 	return mux
 }
 

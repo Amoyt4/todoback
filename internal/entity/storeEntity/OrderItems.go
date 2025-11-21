@@ -1,30 +1,26 @@
 package storeEntity
 
 type OrderItem struct {
-	ID       uint `json:"id" example:"1"`
-	OrderID  uint `json:"order_id" example:"1"`
-	DishID   uint `json:"dish_id" example:"1"`
-	Quantity int  `json:"quantity" example:"2"`
+	ID       int `json:"id"`
+	OrderID  int `json:"order_id"`
+	DishID   int `json:"dish_id"`
+	Quantity int `json:"quantity"`
 }
 
-type OrderItemWithDish struct {
-	ID       uint `json:"id" example:"1"`
-	OrderID  uint `json:"order_id" example:"1"`
-	DishID   uint `json:"dish_id" example:"1"`
-	Quantity int  `json:"quantity" example:"2"`
-	Dish     Dish `json:"dish"`
+type OrderItemCreate struct {
+	DishID   int `json:"dish_id" validate:"required,min=1"`
+	Quantity int `json:"quantity" validate:"required,min=1"`
 }
 
-type CreateOrderItem struct {
-	OrderID  uint `json:"order_id" binding:"required" example:"1"`
-	DishID   uint `json:"dish_id" binding:"required" example:"1"`
-	Quantity int  `json:"quantity" binding:"required,min=1" example:"2"`
+type GetOrderItemsRequest struct {
+	OrderID int `json:"order_id"`
 }
 
-type UpdateOrderItem struct {
-	Quantity int `json:"quantity" binding:"required,min=1" example:"3"`
+type UpdateOrderItemRequest struct {
+	OrderItemID int `json:"order_item_id"`
+	Quantity    int `json:"quantity"`
 }
 
-type DeleteOrderItem struct {
-	ID uint `json:"id" example:"1"`
+type DeleteOrderItemRequest struct {
+	OrderItemID int `json:"order_item_id"`
 }

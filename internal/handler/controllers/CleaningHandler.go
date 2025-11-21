@@ -49,6 +49,7 @@ func PostNewCleaningHandler(ctx context.Context, db *pgxpool.Pool) http.HandlerF
 		if cleaning.RoomNum == 0 || cleaning.StartTime.IsZero() || cleaning.EndTime.IsZero() {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte("все поля должны быть заполнены"))
+			return
 		}
 
 		id, err := repository.PostNewCleaning(ctx, db, &cleaning)

@@ -3,19 +3,23 @@ package storeEntity
 import "time"
 
 type Order struct {
-	ID            uint                `json:"id" example:"1"`
-	RoomNum       int                 `json:"room_num" example:"101"`
-	TimeToDeliver time.Time           `json:"time_to_deliver"`
-	TotalSum      int                 `json:"total_sum" example:"1500"`
-	Items         []OrderItemWithDish `json:"items"`
+	ID            int         `json:"id"`
+	RoomNum       int         `json:"room_num"`
+	TimeToDeliver time.Time   `json:"time_to_deliver"`
+	TotalSum      int         `json:"total_summ"`
+	Items         []OrderItem `json:"items"`
 }
 
-type NewOrder struct {
-	RoomNum       int       `json:"room_num" example:"1"`
-	TimeToDeliver time.Time `json:"time_to_deliver"`
-	TotalSum      int       `json:"total_sum" example:"1"`
+type CreateOrderRequest struct {
+	RoomNum       int               `json:"room_num" validate:"required,min=1"`
+	TimeToDeliver time.Time         `json:"time_to_deliver" validate:"required"`
+	Items         []OrderItemCreate `json:"items" validate:"required,min=1"`
+}
+
+type GetOrderByIDRequest struct {
+	ID int `json:"id"`
 }
 
 type DeleteOrder struct {
-	ID uint `json:"id" example:"1"`
+	ID int `json:"id"`
 }
